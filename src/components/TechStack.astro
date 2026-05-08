@@ -1,0 +1,76 @@
+---
+const CDN = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
+
+const categories = [
+  {
+    label: 'Languages',
+    items: [
+      { name: 'JavaScript', icon: `${CDN}/javascript/javascript-original.svg` },
+      { name: 'TypeScript', icon: `${CDN}/typescript/typescript-original.svg` },
+      { name: 'PHP',        icon: `${CDN}/php/php-original.svg` },
+      { name: 'Python',     icon: `${CDN}/python/python-original.svg` },
+    ],
+  },
+  {
+    label: 'Frameworks & Runtimes',
+    items: [
+      { name: 'Laravel',  icon: `${CDN}/laravel/laravel-original.svg` },
+      { name: 'Next.js',  icon: `${CDN}/nextjs/nextjs-original.svg` },
+      { name: 'Express',  icon: `${CDN}/express/express-original.svg` },
+      { name: 'Astro',    icon: `${CDN}/astro/astro-original.svg` },
+      { name: 'FastAPI',  icon: `${CDN}/fastapi/fastapi-original.svg` },
+      { name: 'Node.js',  icon: `${CDN}/nodejs/nodejs-original.svg` },
+    ],
+  },
+  {
+    label: 'Tools & Platforms',
+    items: [
+      { name: 'Shopify',    icon: '/icons/shopify.svg' },
+      { name: 'PostgreSQL', icon: `${CDN}/postgresql/postgresql-original.svg` },
+      { name: 'MySQL',      icon: `${CDN}/mysql/mysql-original.svg` },
+      { name: 'Redis',      icon: `${CDN}/redis/redis-original.svg` },
+      { name: 'Docker',     icon: `${CDN}/docker/docker-original.svg` },
+      { name: 'Git',        icon: `${CDN}/git/git-original.svg` },
+    ],
+  },
+];
+---
+
+<section id="stack" class="py-24 px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-16">
+      <p class="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">My Toolkit</p>
+      <h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+        Tech Stack
+      </h2>
+      <p class="text-lg text-slate-500 max-w-xl">
+        Technologies I work with daily to build reliable, scalable products.
+      </p>
+    </div>
+
+    <!-- Categories -->
+    <div class="flex flex-col gap-12">
+      {categories.map((cat) => (
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-5">{cat.label}</p>
+          <div class="flex flex-wrap gap-3">
+            {cat.items.map((tech) => (
+              <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all duration-200 cursor-default">
+                <img
+                  src={tech.icon}
+                  alt={tech.name}
+                  width="20"
+                  height="20"
+                  class="w-5 h-5 object-contain flex-shrink-0"
+                  loading="lazy"
+                />
+                <span class="text-sm font-medium text-slate-700">{tech.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

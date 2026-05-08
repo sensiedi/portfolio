@@ -1,0 +1,168 @@
+---
+// TODO: Replace with your actual contact form API endpoint
+const CONTACT_API_ENDPOINT = '/api/contact';
+---
+
+<section id="contact" class="py-24 px-6 bg-slate-50">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: Copy -->
+      <div>
+        <p class="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">Contact</p>
+        <h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+          Let's build<br />something great.
+        </h2>
+        <p class="text-lg text-slate-500 leading-relaxed mb-10">
+          Whether you have a project in mind, need an integration built, or just want to explore ideas — reach out and I'll get back to you promptly.
+        </p>
+
+        <!-- Trust signals -->
+        <div class="flex flex-col gap-4">
+          {[
+            { label: 'Response time', value: 'Within 24 hours' },
+            { label: 'Availability', value: 'Open to new projects' },
+          ].map(({ label, value }) => (
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <span class="text-sm text-slate-400">{label} — </span>
+                <span class="text-sm font-medium text-slate-700">{value}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-8 shadow-sm">
+        <form id="contact-form" class="flex flex-col gap-4 sm:gap-5">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="name" class="text-sm font-medium text-slate-700">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="John Doe"
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="email" class="text-sm font-medium text-slate-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="john@example.com"
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label for="subject" class="text-sm font-medium text-slate-700">Subject</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Project inquiry, integration work, etc."
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label for="message" class="text-sm font-medium text-slate-700">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="5"
+              placeholder="Tell me about your project or what you need help with..."
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Status message -->
+          <div id="form-status" class="hidden text-sm font-medium px-4 py-3 rounded-xl"></div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 flex items-center justify-center gap-2"
+          >
+            <span id="btn-text">Send Message</span>
+            <svg id="btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+            </svg>
+            <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ CONTACT_API_ENDPOINT }}>
+  const form = document.getElementById('contact-form');
+  const statusEl = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+  const btnText = document.getElementById('btn-text');
+  const btnIcon = document.getElementById('btn-icon');
+  const btnSpinner = document.getElementById('btn-spinner');
+
+  function setStatus(type, message) {
+    statusEl.className = 'text-sm font-medium px-4 py-3 rounded-xl';
+    statusEl.classList.remove('hidden');
+    if (type === 'success') {
+      statusEl.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200');
+    } else {
+      statusEl.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-200');
+    }
+    statusEl.textContent = message;
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Sending...';
+    btnIcon.classList.add('hidden');
+    btnSpinner.classList.remove('hidden');
+    statusEl.classList.add('hidden');
+
+    const data = Object.fromEntries(new FormData(form));
+
+    try {
+      const res = await fetch(CONTACT_API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setStatus('success', 'Message sent! I\'ll get back to you within 24 hours.');
+        form.reset();
+      } else {
+        setStatus('error', 'Something went wrong. Please try again or reach out directly.');
+      }
+    } catch {
+      setStatus('error', 'Unable to send message. Please check your connection and try again.');
+    } finally {
+      submitBtn.disabled = false;
+      btnText.textContent = 'Send Message';
+      btnIcon.classList.remove('hidden');
+      btnSpinner.classList.add('hidden');
+    }
+  });
+</script>
